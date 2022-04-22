@@ -17,9 +17,11 @@ export const Header = ({ currentAccount, connectWallet, ToastContainer }) => {
 
       {currentAccount ? (
         <div className="w-1/3 flex justify-end items-center">
-          <button className="items-center bg-green-600 rounded-full font-medium p-2 shadow-lg color-blue-500 hover:bg-green-500 focus:outline-none focus:shadow-outline text-white">
-            <span className="">Create a New Feed</span>
-          </button>
+          <Link to="/upload">
+            <button className="items-center bg-green-600 rounded-full font-medium p-2 shadow-lg color-blue-500 hover:bg-green-500 focus:outline-none focus:shadow-outline text-white">
+              <span className="">Create a New Feed</span>
+            </button>
+          </Link>
         </div>
       ) : (
         <div className=" w-1/3 flex justify-end">
