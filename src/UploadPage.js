@@ -1,24 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Header } from "./components/Header";
+import React, { useState, useRef } from "react";
 import Sidebar from "./components/Sidebar";
 import { create } from "ipfs-http-client";
-import { BiCloud, BiMusic, BiPlus } from "react-icons/bi";
-import toast from "react-hot-toast";
-import getContract from "./utils/getContract";
-import "react-toggle/style.css"; // for ES6 modules
+import { BiCloud, BiPlus } from "react-icons/bi";
+import getContract from "./utilities/getContract";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Upload() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [video, setVideo] = useState("");
-  const [isAudio, setIsAudio] = useState(false);
+  const [coverImage, setCoverImage] = useState("");
 
   const client = create("https://ipfs.infura.io:5001/api/v0");
-  const thumbnailRef = useRef();
-  const videoRef = useRef();
+  const coverImageRef = useRef();
 
   const handleSubmit = async () => {
     if (
@@ -26,102 +21,108 @@ export default function Upload() {
       description === "" ||
       category === "" ||
       location === "" ||
-      thumbnail === "" ||
-      video === ""
+      coverImage === ""
     ) {
-      toast.error("Please fill all the fields", {
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
+      toast.error("Please, all the fields are required!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
       return;
     }
-    uploadThumbnail(thumbnail);
+    uploadCoverImage(coverImage);
   };
 
-  const uploadThumbnail = async (thumbnail) => {
-    toast("Uploading thumbnail...", {
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
-
-    console.log("uploading thumbnail");
-    try {
-      const added = await client.add(thumbnail);
-      uploadVideo(added.path);
-      toast.success("Thumbnail uploaded successfully", {
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
-      });
-    } catch (error) {
-      console.log("Error uploading file: ", error);
-    }
-  };
-
-  const uploadVideo = async (thumbnail) => {
-    console.log("uploading video");
-    toast("Uploading video...", {
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
+  const uploadCoverImage = async (coverImage) => {
+    toast("Uploading Cover Image...", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
     });
 
     try {
-      const added = await client.add(video);
-      console.log({
-        uploadVIdeo: added.path,
-        thumbnail: thumbnail,
-      });
-      saveVideo(added.path, thumbnail);
-      toast.success("Video uploaded successfully", {
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
-      });
+      const image = await client.add(coverImage);
+      await saveFeed(image.path);
     } catch (error) {
-      console.log("Error uploading file: ", error);
+      toast.error("Error Uploading Cover Image", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
-  const saveVideo = async (video, thumbnail) => {
-    let data = {
-      title,
-      description,
-      category,
-      location,
-      thumbnail,
-      video,
-    };
-    console.log("Saving video", data);
-    let contract = await getContract();
-    let UploadedDate = String(new Date());
+  const saveFeed = async (coverImage) => {
+    toast("Saving Feed...", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
 
-    console.log("UploadedDate", UploadedDate);
+    console.log(title, description, category, location, coverImage);
 
-    // Show successfully alert
+    try {
+      const contract = await getContract();
+      const UploadedDate = String(new Date());
 
-    await contract.uploadVideo(
-      video,
-      title,
-      description,
-      location,
-      category,
-      thumbnail,
-      isAudio,
-      UploadedDate
-    );
+      const result = await contract.createFeed(
+        title,
+        description,
+        location,
+        category,
+        coverImage,
+        UploadedDate
+      );
+
+      toast.success("Feed Saved Successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      // reset form
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setLocation("");
+      setCoverImage("");
+
+      console.log(result);
+      //       if (result) {
+      //         // Redirect to Home Page
+      //         window.location.href = "/";
+      //       }
+    } catch (error) {
+      toast.error("Error Saving Feed", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   const goBack = () => {
@@ -132,8 +133,6 @@ export default function Upload() {
     <div className="w-full h-screen flex flex-row">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Header />
-
         <div className="mt-5 mr-10 flex  justify-end">
           <div className="flex items-center">
             <button
@@ -148,14 +147,14 @@ export default function Upload() {
               onClick={() => {
                 handleSubmit();
               }}
-              className="bg-blue-500 hover:bg-blue-700 text-white  py-2  rounded-lg flex px-4 justify-between flex-row items-center"
+              className="bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg flex px-4 justify-between flex-row items-center"
             >
               <BiCloud />
               <p className="ml-2">Upload</p>
             </button>
           </div>
         </div>
-        <div className="flex flex-col m-10 	mt-5  lg:flex-row">
+        <div className="flex flex-col m-10 mt-5 lg:flex-row">
           <div className="flex lg:w-3/4 flex-col ">
             <label className="text-gray-600 dark:text-[#9CA3AF]  text-sm">
               Title
@@ -163,16 +162,16 @@ export default function Upload() {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Rick Astley - Never Gonna Give You Up (Official Music Video)"
+              placeholder="Web3 is taking over the world!"
               className="w-[90%] dark:text-white  dark:placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
             />
             <label className="text-gray-600 dark:text-[#9CA3AF] mt-10 text-sm">
-              Description
+              Body
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Never Gonna Give You Up was a global smash on its release in July 1987, topping the charts in 25 countries including Rick’s native UK and the US Billboard Hot 100.  It also won the Brit Award for Best single in 1988. Stock Aitken and Waterman wrote and produced the track which was the lead-off single and lead track from Rick’s debut LP “Whenever You Need Somebody."
+              placeholder="Web3 is all about decentralization — it aims to give users more control over their data."
               className="w-[90%] dark:text-white  dark:placeholder:text-gray-600 rounded-md mt-2  h-32 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
             />
 
@@ -185,7 +184,7 @@ export default function Upload() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   type="text"
-                  placeholder="Bali - Indonesia"
+                  placeholder="Lagos - Nigeria"
                   className="rounded-md dark:text-white mt-2 dark:placeholder:text-gray-600  h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
                 />
               </div>
@@ -211,22 +210,22 @@ export default function Upload() {
               </div>
             </div>
             <label className="text-gray-600 dark:text-[#9CA3AF]  mt-10 text-sm">
-              Thumbnail
+              Cover Image
             </label>
 
             <div
               onClick={() => {
-                thumbnailRef.current.click();
+                coverImageRef.current.click();
               }}
               className="border-2 w-64 dark:border-gray-600  border-dashed border-borderWhiteGray rounded-md mt-2 p-2  h-36 items-center justify-center flex"
             >
-              {thumbnail ? (
+              {coverImage ? (
                 <img
                   onClick={() => {
-                    thumbnailRef.current.click();
+                    coverImageRef.current.click();
                   }}
-                  src={URL.createObjectURL(thumbnail)}
-                  alt="thumbnail"
+                  src={URL.createObjectURL(coverImage)}
+                  alt="coverImage"
                   className="h-full rounded-md"
                 />
               ) : (
@@ -237,57 +236,25 @@ export default function Upload() {
             <input
               type="file"
               className="hidden"
-              ref={thumbnailRef}
+              ref={coverImageRef}
               onChange={(e) => {
-                setThumbnail(e.target.files[0]);
+                setCoverImage(e.target.files[0]);
               }}
             />
           </div>
-
-          <div
-            onClick={() => {
-              videoRef.current.click();
-            }}
-            className={
-              video
-                ? " w-96   rounded-md  h-64 items-center justify-center flex"
-                : "border-2 dark:border-gray-600  w-96 border-dashed border-borderWhiteGray rounded-md mt-8   h-64 items-center justify-center flex"
-            }
-          >
-            {video ? (
-              <>
-                {isAudio ? (
-                  <audio
-                    src={URL.createObjectURL(video)}
-                    controls
-                    className="w-full h-full"
-                  />
-                ) : (
-                  <video
-                    controls
-                    src={URL.createObjectURL(video)}
-                    className="h-full rounded-md"
-                  />
-                )}
-              </>
-            ) : (
-              <p className="dark:text-[#9CA3AF]">
-                Upload {isAudio ? "Audio" : "Video"}
-              </p>
-            )}
-          </div>
         </div>
-        <input
-          type="file"
-          className="hidden"
-          ref={videoRef}
-          accept={isAudio ? "audio/*" : "video/*"}
-          onChange={(e) => {
-            setVideo(e.target.files[0]);
-            console.log(e.target.files[0]);
-          }}
-        />
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
