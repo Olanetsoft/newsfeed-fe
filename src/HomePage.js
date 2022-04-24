@@ -135,7 +135,6 @@ export default function Main() {
       date,
       author
     ) => {
-      console.log("NewFeed");
       setFeeds((prevState) => [
         ...prevState,
         {
