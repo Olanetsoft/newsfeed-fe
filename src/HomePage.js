@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Main() {
   const [loading, setLoading] = useState(false);
   const [loadingArray] = useState(15);
+
+  // Create a state variable to store the feeds in the blockchain
   const [feeds, setFeeds] = useState([]);
 
   /*

@@ -8,8 +8,10 @@ import Feed from "./components/Feed";
 export default function VideoPage() {
   const [relatedFeeds, setRelatedFeeds] = useState([]);
 
+  // state variable to store the current feed
   const [feed, setFeed] = useState([]);
 
+  // Function to get the feed id from the url
   const getUrlValue = () => {
     let vars = {};
     window.location.href.replace(

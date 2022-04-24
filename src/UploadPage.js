@@ -8,15 +8,25 @@ import { ToastContainer } from "react-toastify";
 import { success, error, defaultToast } from "./utilities/response";
 
 export default function Upload() {
+  /*
+   * A state variable we use to store new feed input.
+   */
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [coverImage, setCoverImage] = useState("");
 
+  /*
+   * Create an IPFS node
+   */
   const client = create("https://ipfs.infura.io:5001/api/v0");
   const coverImageRef = useRef();
 
+  /*
+   * A function to handle validation of uploading a new feed.
+   */
   const handleSubmit = async () => {
     if (
       title === "" ||
@@ -28,20 +38,34 @@ export default function Upload() {
       error("Please, all the fields are required!");
       return;
     }
+
+    /*
+     * Upload the cover image to IPFS
+     */
     uploadCoverImage(coverImage);
   };
 
+  /*
+   * A function to upload a cover image to IPFS
+   */
   const uploadCoverImage = async (coverImage) => {
     defaultToast("Uploading Cover Image...");
 
     try {
       const image = await client.add(coverImage);
+
+      /*
+       * Save the new feed to the blockchain
+       */
       await saveFeed(image.path);
     } catch (err) {
       error("Error Uploading Cover Image");
     }
   };
 
+  /*
+   * A function to save a new feed to the blockchain
+   */
   const saveFeed = async (coverImage) => {
     defaultToast("Saving Feed...");
 
@@ -50,6 +74,10 @@ export default function Upload() {
     try {
       const contract = await getContract();
       const UploadedDate = String(new Date());
+
+      /*
+       * Save the new feed to the blockchain
+       */
       await contract.createFeed(
         title,
         description,
@@ -75,6 +103,7 @@ export default function Upload() {
     }
   };
 
+  // Handles redirect to Home Page or previous page
   const goBack = () => {
     window.history.back();
   };
