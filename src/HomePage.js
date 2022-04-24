@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 import getContract from "./utilities/getContract";
 
 import { success, error, warn } from "./utilities/response";
-
-import "react-toastify/dist/ReactToastify.css";
-
 export default function Main() {
   const [loading, setLoading] = useState(false);
   const [loadingArray] = useState(15);
