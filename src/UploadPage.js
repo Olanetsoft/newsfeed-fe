@@ -104,30 +104,30 @@ export default function Upload() {
             </button>
           </div>
         </div>
-        <div className="flex flex-col m-10 mt-5 lg:flex-row">
+        <div className="flex flex-col m-10 mt-5 lg:flex-row lg:justify-center">
           <div className="flex lg:w-3/4 flex-col ">
-            <label className="text-gray-600 dark:text-[#9CA3AF]  text-sm">
+            <label className="text-gray-600 dark:text-[#9CA3AF] text-md font-bold mb-2">
               Title
             </label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Web3 is taking over the world!"
-              className="w-[90%] dark:text-white  dark:placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
+              className="w-[60%] dark:text-white dark:placeholder:text-gray-600 rounded-xl mt-2 h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
             />
-            <label className="text-gray-600 dark:text-[#9CA3AF] mt-10 text-sm">
+            <label className="text-gray-600 dark:text-[#9CA3AF] mt-10 text-md font-bold">
               Body
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Web3 is all about decentralization — it aims to give users more control over their data."
-              className="w-[90%] dark:text-white  dark:placeholder:text-gray-600 rounded-md mt-2  h-32 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
+              className="w-[60%] dark:text-white dark:placeholder:text-gray-600 rounded-xl mt-2 h-32 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
             />
 
-            <div className="flex flex-row mt-10 w-[90%]  justify-between">
+            <div className="flex flex-row mt-10 w-[60%] justify-between">
               <div className="flex flex-col w-2/5	">
-                <label className="text-gray-600 dark:text-[#9CA3AF]  text-sm">
+                <label className="text-gray-600 dark:text-[#9CA3AF] text-md font-bold">
                   Location
                 </label>
                 <input
@@ -135,17 +135,17 @@ export default function Upload() {
                   onChange={(e) => setLocation(e.target.value)}
                   type="text"
                   placeholder="Lagos - Nigeria"
-                  className="rounded-md dark:text-white mt-2 dark:placeholder:text-gray-600  h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
+                  className="rounded-md dark:text-white mt-2 dark:placeholder:text-gray-600 h-12 p-2 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:border-[#444752] focus:outline-none"
                 />
               </div>
-              <div className="flex flex-col w-2/5	">
-                <label className="text-gray-600 dark:text-[#9CA3AF]  text-sm">
+              <div className="flex flex-col w-2/5">
+                <label className="text-gray-600 dark:text-[#9CA3AF] text-md font-bold">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className=" rounded-md dark:text-white mt-2  h-12 p-2 dark:border-gray-600 border border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:text-[#9CA3AF] focus:outline-none"
+                  className="dark:text-white mt-2 h-12 p-2 dark:border-gray-600 border rounded-xl border-borderWhiteGray bg-white dark:bg-backgroundBlack dark:text-[#9CA3AF] focus:outline-none"
                 >
                   <option>Music</option>
                   <option>Sports</option>
@@ -158,7 +158,7 @@ export default function Upload() {
                 </select>
               </div>
             </div>
-            <label className="text-gray-600 dark:text-[#9CA3AF]  mt-10 text-sm">
+            <label className="text-gray-600 dark:text-[#9CA3AF] mt-10 text-md font-bold">
               Cover Image
             </label>
 
@@ -166,7 +166,7 @@ export default function Upload() {
               onClick={() => {
                 coverImageRef.current.click();
               }}
-              className="border-2 w-64 dark:border-gray-600  border-dashed border-borderWhiteGray rounded-md mt-2 p-2  h-36 items-center justify-center flex"
+              className="border-2 w-64 dark:border-gray-600 border-dashed border-borderWhiteGray rounded-md mt-2 p-2 h-46 items-center justify-center flex flex-row"
             >
               {coverImage ? (
                 <img
@@ -175,10 +175,10 @@ export default function Upload() {
                   }}
                   src={URL.createObjectURL(coverImage)}
                   alt="coverImage"
-                  className="h-full rounded-md"
+                  className="h-full rounded-md w-full"
                 />
               ) : (
-                <BiPlus size={40} color="gray" />
+                <BiPlus size={70} color="gray" />
               )}
             </div>
 
