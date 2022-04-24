@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ updateCategory }) {
   const [active, setActive] = useState("All");
@@ -64,11 +65,13 @@ export default function Sidebar({ updateCategory }) {
 
   return (
     <div className="border-r border-borderWhiteGray dark:border-borderGray p-7">
-      <AiOutlineMenu
-        color="#fff"
-        size="25px"
-        className="fill-whiteIcons dark:fill-white"
-      />
+      <Link to="/">
+        <AiOutlineMenu
+          color="#fff"
+          size="25px"
+          className="fill-whiteIcons dark:fill-white"
+        />
+      </Link>
       <div className="mt-14 flex flex-col justify-between h-80">
         {categories.map((category, index) => (
           <div

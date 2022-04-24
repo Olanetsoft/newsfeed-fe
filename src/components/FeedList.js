@@ -13,7 +13,7 @@ export default function FeedList({ horizontal, feed }) {
       <img
         className={
           horizontal
-            ? "object-cover rounded-lg w-60"
+            ? "object-cover rounded-lg w-60 h-40"
             : "object-cover rounded-lg w-full h-40"
         }
         src={`https://ipfs.infura.io/ipfs/${feed.coverImageHash}`}
@@ -26,6 +26,11 @@ export default function FeedList({ horizontal, feed }) {
         {horizontal && (
           <p className="text-sm flex items-center text-textSubTitle mt-1">
             {feed.category}
+          </p>
+        )}
+        {horizontal && (
+          <p className="text-sm flex items-center text-textSubTitle mt-1">
+            {feed.description.slice(0, 30)}...
           </p>
         )}
         <p className="text-sm flex items-center text-textSubTitle mt-1">

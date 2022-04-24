@@ -3,7 +3,9 @@ import Sidebar from "./components/Sidebar";
 import { create } from "ipfs-http-client";
 import { BiCloud, BiPlus } from "react-icons/bi";
 import getContract from "./utilities/getContract";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+
+import { success, error, defaultToast } from "./utilities/response";
 
 export default function Upload() {
   const [title, setTitle] = useState("");
@@ -23,65 +25,32 @@ export default function Upload() {
       location === "" ||
       coverImage === ""
     ) {
-      toast.error("Please, all the fields are required!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      error("Please, all the fields are required!");
       return;
     }
     uploadCoverImage(coverImage);
   };
 
   const uploadCoverImage = async (coverImage) => {
-    toast("Uploading Cover Image...", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    defaultToast("Uploading Cover Image...");
 
     try {
       const image = await client.add(coverImage);
       await saveFeed(image.path);
-    } catch (error) {
-      toast.error("Error Uploading Cover Image", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    } catch (err) {
+      error("Error Uploading Cover Image");
     }
   };
 
   const saveFeed = async (coverImage) => {
-    toast("Saving Feed...", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    defaultToast("Saving Feed...");
 
     console.log(title, description, category, location, coverImage);
 
     try {
       const contract = await getContract();
       const UploadedDate = String(new Date());
-
-      const result = await contract.createFeed(
+      await contract.createFeed(
         title,
         description,
         location,
@@ -90,15 +59,7 @@ export default function Upload() {
         UploadedDate
       );
 
-      toast.success("Feed Saved Successfully", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      success("Feed Saved Successfully");
 
       // reset form
       setTitle("");
@@ -107,21 +68,10 @@ export default function Upload() {
       setLocation("");
       setCoverImage("");
 
-      console.log(result);
-      //       if (result) {
-      //         // Redirect to Home Page
-      //         window.location.href = "/";
-      //       }
-    } catch (error) {
-      toast.error("Error Saving Feed", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // Redirect to Home Page
+      //       window.location.href = "/";
+    } catch (err) {
+      error("Error Saving Feed");
     }
   };
 
@@ -203,9 +153,8 @@ export default function Upload() {
                   <option>News</option>
                   <option>Entertainment</option>
                   <option>Education</option>
-                  <option>Science & Technology</option>
+                  <option>Technology</option>
                   <option>Travel</option>
-                  <option>Other</option>
                 </select>
               </div>
             </div>

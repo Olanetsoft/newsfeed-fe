@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import FeedList from "./components/FeedList";
 import { Link } from "react-router-dom";
 import getContract from "./utilities/getContract";
+
+import { success, error, warn } from "./utilities/response";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -33,45 +35,13 @@ export default function Main() {
       if (accounts.length !== 0) {
         const account = accounts[0];
         setCurrentAccount(account);
-        toast.success("🦄 Wallet is Connected!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        success("🦄 Wallet is Connected!");
       } else {
-        toast.success("Welcome 🎉  ", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        toast.warn("To create a feed, Ensure your wallet Connected!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        success("Welcome 🎉  ");
+        warn("To create a feed, Ensure your wallet Connected!");
       }
-    } catch (error) {
-      toast.error(`${error.message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    } catch (err) {
+      error(`${err.message}`);
     }
   };
 
@@ -83,15 +53,7 @@ export default function Main() {
       const { ethereum } = window;
 
       if (!ethereum) {
-        toast.warn("Make sure you have MetaMask Connected", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        warn("Make sure you have MetaMask Connected");
         return;
       }
 
@@ -99,16 +61,8 @@ export default function Main() {
         method: "eth_requestAccounts",
       });
       setCurrentAccount(accounts[0]);
-    } catch (error) {
-      toast.error(`${error.message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    } catch (err) {
+      error(`${err.message}`);
     }
   };
 
@@ -137,16 +91,22 @@ export default function Main() {
       });
       setFeeds(formattedFeed);
       setLoading(false);
-    } catch (error) {
-      toast.error(`${error.message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    } catch (err) {
+      error(`${err.message}`);
+    }
+  };
+
+  /*
+   * Filter feeds by category
+   */
+  const filterBasedOnCategory = (category) => {
+    if (category === "All") {
+      setFeeds(feeds);
+    } else {
+      let filteredFeeds = feeds.filter((feed) => {
+        return feed.category === category;
       });
+      setFeeds(filteredFeeds);
     }
   };
 
@@ -160,7 +120,7 @@ export default function Main() {
 
   return (
     <div className="w-full  flex flex-row">
-      <Sidebar updateCategory="" />
+      <Sidebar updateCategory={(category) => filterBasedOnCategory(category)} />
       <div className="flex-1 flex flex-col">
         <Header
           currentAccount={currentAccount}
