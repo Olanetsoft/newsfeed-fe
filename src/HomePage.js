@@ -145,7 +145,7 @@ export default function Main() {
           location,
           category,
           coverImageHash,
-          Date,
+          date,
           author,
         },
       ]);
