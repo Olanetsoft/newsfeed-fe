@@ -4,7 +4,6 @@ import getContract from "./utilities/getContract";
 import { Link } from "react-router-dom";
 import FeedList from "./components/FeedList";
 import Feed from "./components/Feed";
-import { BigNumber } from "ethers";
 
 export default function VideoPage() {
   const [relatedFeeds, setRelatedFeeds] = useState([]);

@@ -111,20 +111,22 @@ export default function Main() {
   };
 
   /*
-   * On New Feed
+   * This runs our function when the page loads.
    */
-  const onFeedCreated = async (
-    id,
-    title,
-    description,
-    location,
-    category,
-    coverImageHash,
-    date,
-    author
-  ) => {
-    console.log(
-      "NewFeed",
+  useEffect(() => {
+    getFeeds();
+    checkIfWalletIsConnected();
+
+    /*
+     * This is a hack to make sure we only run the function once.
+     * We need to do this because we're using the useEffect hook.
+     * We can't use the useEffect hook more than once.
+     * https://reactjs.org/docs/hooks-effect.html
+     * https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-the-effects-api
+     * https://reactjs.org/docs/hooks-faq.html#how-do-i-optimize-the-effects-of-a-component
+     */
+    const onFeedCreated = async (
+      id,
       title,
       description,
       location,
@@ -132,24 +134,27 @@ export default function Main() {
       coverImageHash,
       date,
       author
-    );
-    setFeeds((prevState) => [
-      ...prevState,
-      {
-        title,
-        description,
-        location,
-        category,
-        coverImageHash,
-        Date,
-        author,
-      },
-    ]);
+    ) => {
+      console.log("NewFeed");
+      setFeeds((prevState) => [
+        ...prevState,
+        {
+          id,
+          title,
+          description,
+          location,
+          category,
+          coverImageHash,
+          Date,
+          author,
+        },
+      ]);
+    };
 
     let contract;
 
     if (window.ethereum) {
-      contract = await getContract();
+      contract = getContract();
       contract.on("FeedCreated", onFeedCreated);
     }
 
@@ -158,15 +163,6 @@ export default function Main() {
         contract.off("FeedCreated", onFeedCreated);
       }
     };
-  };
-
-  /*
-   * This runs our function when the page loads.
-   */
-  useEffect(() => {
-    getFeeds();
-    checkIfWalletIsConnected();
-    // onFeedCreated();
   }, []);
 
   return (
