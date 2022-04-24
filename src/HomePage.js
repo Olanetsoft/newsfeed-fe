@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "./components/Header";
-import Sidebar from "./components/Sidebar";
 import { ToastContainer } from "react-toastify";
 import FeedList from "./components/FeedList";
 import { Link } from "react-router-dom";
@@ -98,20 +97,6 @@ export default function Main() {
   };
 
   /*
-   * Filter feeds by category
-   */
-  const filterBasedOnCategory = (category) => {
-    if (category === "All") {
-      setFeeds(feeds);
-    } else {
-      let filteredFeeds = feeds.filter((feed) => {
-        return feed.category === category;
-      });
-      setFeeds(filteredFeeds);
-    }
-  };
-
-  /*
    * This runs our function when the page loads.
    */
   useEffect(() => {
@@ -167,7 +152,6 @@ export default function Main() {
 
   return (
     <div className="w-full  flex flex-row">
-      <Sidebar updateCategory={(category) => filterBasedOnCategory(category)} />
       <div className="flex-1 flex flex-col">
         <Header
           currentAccount={currentAccount}

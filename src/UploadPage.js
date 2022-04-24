@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import Sidebar from "./components/Sidebar";
 import { create } from "ipfs-http-client";
 import { BiCloud, BiPlus } from "react-icons/bi";
 import getContract from "./utilities/getContract";
@@ -110,7 +109,6 @@ export default function Upload() {
 
   return (
     <div className="w-full h-screen flex flex-row">
-      <Sidebar />
       <div className="flex-1 flex flex-col">
         <div className="mt-5 mr-10 flex  justify-end">
           <div className="flex items-center">

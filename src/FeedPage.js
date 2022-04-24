@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
 import getContract from "./utilities/getContract";
 import { Link } from "react-router-dom";
 import FeedList from "./components/FeedList";
@@ -101,7 +100,6 @@ export default function VideoPage() {
 
   return (
     <div className="w-full  flex flex-row">
-      <Sidebar />
       <div className="flex-1 flex flex-col">
         <div className="flex flex-col m-10 justify-between lg:flex-row">
           <div className="lg:w-4/6 w-6/6">{feed && <Feed feed={feed} />}</div>
