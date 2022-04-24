@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Header } from "./components/Header";
-import Sidebar from "./components/Sidebar";
 
 export default function Main() {
   const [loading] = useState(true);
@@ -8,7 +7,6 @@ export default function Main() {
 
   return (
     <div className="w-full  flex flex-row">
-      <Sidebar updateCategory="" />
       <div className="flex-1 flex flex-col">
         <Header />
         <div className="flex-1 flex flex-row flex-wrap">
