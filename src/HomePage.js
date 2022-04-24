@@ -74,7 +74,6 @@ export default function Main() {
       setLoading(true);
       const contract = await getContract();
       const AllFeeds = await contract.getAllFeeds();
-
       /*
        * We only need title, category, coverImageHash, and author
        * pick those out
