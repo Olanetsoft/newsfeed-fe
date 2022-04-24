@@ -4,13 +4,14 @@ import getContract from "./utilities/getContract";
 import { Link } from "react-router-dom";
 import FeedList from "./components/FeedList";
 import Feed from "./components/Feed";
+import { BigNumber } from "ethers";
 
 export default function VideoPage() {
   const [relatedFeeds, setRelatedFeeds] = useState([]);
 
   const [feed, setFeed] = useState([]);
 
-  const getUrlVars = () => {
+  const getUrlValue = () => {
     let vars = {};
     window.location.href.replace(
       /[?&]+([^=&]+)=([^&]*)/gi,
@@ -27,7 +28,7 @@ export default function VideoPage() {
   const getFeed = async () => {
     try {
       const contract = await getContract();
-      let feedId = getUrlVars()["id"];
+      let feedId = getUrlValue()["id"];
       const singleFeed = await contract.getFeed(feedId);
 
       // Format feed
@@ -54,7 +55,7 @@ export default function VideoPage() {
   const getRelatedFeeds = async () => {
     try {
       const contract = await getContract();
-      let feedId = getUrlVars()["id"];
+      let feedId = getUrlValue()["id"];
       // Get all feeds and return feeds and filter only the one in the same category as the feed
       const allFeeds = await contract.getAllFeeds();
       const singleFeed = await contract.getFeed(feedId);

@@ -5,7 +5,7 @@ export default function getContract() {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   let contract = new ethers.Contract(
-    "0xC1dA872DFFd58dB46a1E75635Bf15F5b511C3e23",
+    "0xD5cc2429681e148890E423Ce60768D787E77dA94",
     ContractAbi.abi,
     signer
   );

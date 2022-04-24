@@ -69,7 +69,7 @@ export default function Upload() {
       setCoverImage("");
 
       // Redirect to Home Page
-      //       window.location.href = "/";
+      window.location.href = "/";
     } catch (err) {
       error("Error Saving Feed");
     }

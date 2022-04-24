@@ -111,11 +111,62 @@ export default function Main() {
   };
 
   /*
+   * On New Feed
+   */
+  const onFeedCreated = async (
+    id,
+    title,
+    description,
+    location,
+    category,
+    coverImageHash,
+    date,
+    author
+  ) => {
+    console.log(
+      "NewFeed",
+      title,
+      description,
+      location,
+      category,
+      coverImageHash,
+      date,
+      author
+    );
+    setFeeds((prevState) => [
+      ...prevState,
+      {
+        title,
+        description,
+        location,
+        category,
+        coverImageHash,
+        Date,
+        author,
+      },
+    ]);
+
+    let contract;
+
+    if (window.ethereum) {
+      contract = await getContract();
+      contract.on("FeedCreated", onFeedCreated);
+    }
+
+    return () => {
+      if (contract) {
+        contract.off("FeedCreated", onFeedCreated);
+      }
+    };
+  };
+
+  /*
    * This runs our function when the page loads.
    */
   useEffect(() => {
     getFeeds();
     checkIfWalletIsConnected();
+    // onFeedCreated();
   }, []);
 
   return (

@@ -61,6 +61,37 @@ export default function Sidebar({ updateCategory }) {
         updateCategory("Gaming");
       },
     },
+    {
+      name: (
+        <p style={{ color: active === "News" ? "green" : "black" }}>News</p>
+      ),
+      onClick: () => {
+        setActive("News");
+        updateCategory("News");
+      },
+    },
+    {
+      name: (
+        <p style={{ color: active === "Education" ? "green" : "black" }}>
+          Education
+        </p>
+      ),
+      onClick: () => {
+        setActive("Education");
+        updateCategory("Education");
+      },
+    },
+    {
+      name: (
+        <p style={{ color: active === "Entertainment" ? "green" : "black" }}>
+          Entertainment
+        </p>
+      ),
+      onClick: () => {
+        setActive("Entertainment");
+        updateCategory("Entertainment");
+      },
+    },
   ];
 
   return (
