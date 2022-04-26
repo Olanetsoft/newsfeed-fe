@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import FeedList from "./components/FeedList";
 import Feed from "./components/Feed";
 
-export default function VideoPage() {
+export default function FeedPage() {
   const [relatedFeeds, setRelatedFeeds] = useState([]);
 
   // state variable to store the current feed

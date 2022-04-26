@@ -4,10 +4,10 @@ import { ethers } from "ethers";
 export default function getContract() {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner(
-    "0x2C08B4B909F02EA5D8A0E44986720D76BAC8224B"
+    "0xa8BB60701670A91b693eb119EacCb0fe4D53Ac6b"
   );
   let contract = new ethers.Contract(
-    "0xD5cc2429681e148890E423Ce60768D787E77dA94",
+    "0x385c3494C8FBE18F952032230d6618D2911E85cc",
     ContractAbi.abi,
     signer
   );

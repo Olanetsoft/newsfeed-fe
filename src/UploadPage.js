@@ -98,6 +98,7 @@ export default function Upload() {
       // Redirect to Home Page
       window.location.href = "/";
     } catch (err) {
+      console.log(err);
       error("Error Saving Feed");
     }
   };
